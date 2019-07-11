@@ -1,7 +1,6 @@
 package com.tutorial.repo.registration.dao;
 
 import com.tutorial.repo.registration.dao.mapper.UserDORowMapper;
-import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,12 @@ public class UserRegistration {
         String SQL = "SELECT * FROM USER_INFO WHERE USER_NAME = ?";
         List<UserDO> query = jdbcTemplate.query(SQL, new Object[]{key}, new UserDORowMapper());
         return query.get(0);
+    }
+
+    public List<UserDO> listAll() {
+        String SQL = "SELECT * FROM USER_INFO";
+        return jdbcTemplate.query(SQL, new Object[]{}, new UserDORowMapper());
+
     }
 
 }

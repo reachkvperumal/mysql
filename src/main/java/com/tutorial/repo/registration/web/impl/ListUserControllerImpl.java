@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
 @RestController
 @RequestMapping("/list")
 public class ListUserControllerImpl implements ListUserController {
@@ -34,5 +38,20 @@ public class ListUserControllerImpl implements ListUserController {
 
         return new ListUserRes(userDO.getFirstName(), userDO.getLastName(), userDO.getMiddleName(),
                 userDO.getDob(), userDO.getEmail(),userDO.getUserName(),userDO.getPassword());
+    }
+
+    @PostMapping(value = "/all",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    public List<ListUserRes> listAll() {
+
+        return userRegistration.listAll()
+                .stream()
+                .map(o -> new ListUserRes(o.getFirstName(), o.getLastName(), o.getMiddleName(),
+                        o.getDob(), o.getEmail(), o.getUserName(), o.getPassword()))
+                .collect(toList());
+
+
     }
 }
