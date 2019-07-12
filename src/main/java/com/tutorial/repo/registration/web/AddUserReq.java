@@ -22,16 +22,6 @@ public class AddUserReq implements Serializable {
     public AddUserReq() {
     }
 
-    public AddUserReq(String firstName, String lastName, String middleName, String dob, String email, String userName, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
-        this.dob = dob;
-        this.email = email;
-        this.userName = userName;
-        this.password = password;
-    }
-
     public String getFirstName() {
         return firstName;
     }

@@ -3,7 +3,8 @@ package com.tutorial.repo.registration.web.impl;
 import com.google.gson.Gson;
 import com.tutorial.repo.registration.dao.UserDO;
 import com.tutorial.repo.registration.dao.UserRegistration;
-import com.tutorial.repo.registration.web.ListUserReq;
+import com.tutorial.repo.registration.web.AddUserReq;
+import com.tutorial.repo.registration.web.ListUserRes;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,9 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = ListUserControllerImpl.class)
-public class ListUserControllerImplWebTest {
-
+@WebMvcTest(controllers = AddUserControllerImpl.class)
+public class AddUserControllerImplWebTest {
     @Autowired
     private WebApplicationContext wac;
 
@@ -54,26 +54,36 @@ public class ListUserControllerImplWebTest {
         this.userDO = this.userDOList.stream().filter(obj -> obj.getUserName().equals("1")).findFirst().get();
     }
 
-
     @Test
     public void listAllSuccess() throws Exception {
-        given(userRegistration.listAll()).willReturn(this.userDOList);
+        given(userRegistration.addUser(any(UserDO.class))).willReturn(true);
 
-        mvc.perform(post("/list/all")
+        AddUserReq userReq = new AddUserReq();
+        userReq.setDob(userDO.getDob());
+        userReq.setEmail(userDO.getEmail());
+        userReq.setFirstName(userDO.getFirstName());
+        userReq.setLastName(userDO.getLastName());
+        userReq.setPassword(userDO.getPassword());
+        userReq.setUserName(userDO.getUserName());
+        userReq.setMiddleName(userDO.getMiddleName());
+
+        mvc.perform(post("/add/user")
+                .contentType(APPLICATION_JSON)
+                .content(new Gson().toJson(userReq))
                 .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void listSuccess() throws Exception {
-        given(userRegistration.list(anyString())).willReturn(userDO);
-        mvc.perform(post("/list/user")
-                .contentType(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .content(new Gson().toJson(new ListUserReq("1"))))
-                .andDo(print())
-                .andExpect(status().isOk());
+    public void setUserRes() {
+        ListUserRes userRes = new ListUserRes();
+        userRes.setDob(userDO.getDob());
+        userRes.setEmail(userDO.getEmail());
+        userRes.setFirstName(userDO.getFirstName());
+        userRes.setLastName(userDO.getFirstName());
+        userRes.setMiddleName(userDO.getMiddleName());
+        userRes.setUserName(userDO.getUserName());
+        userRes.setPassword(userDO.getPassword());
     }
-
 }
