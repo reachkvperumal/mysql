@@ -41,7 +41,6 @@ public class ListUserControllerImpl implements ListUserController {
     }
 
     @PostMapping(value = "/all",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
     public List<ListUserRes> listAll() {

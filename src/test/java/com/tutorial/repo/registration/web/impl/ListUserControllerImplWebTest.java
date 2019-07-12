@@ -55,7 +55,6 @@ public class ListUserControllerImplWebTest {
         given(userRegistration.listAll()).willReturn(Arrays.asList(userDOS));
 
         mvc.perform(post("/list/all")
-                .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
