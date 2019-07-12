@@ -16,10 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 
 import static org.mockito.BDDMockito.given;
@@ -45,15 +42,16 @@ public class ListUserControllerImplWebTest {
     @MockBean
     private UserRegistration userRegistration;
 
-    private byte[] getFile(String resource) throws IOException {
-        return IOUtils.toByteArray(wac.getResource("classpath:" + resource).getInputStream());
+    private String getFile(String resource) throws IOException {
+        return new String(IOUtils.toByteArray(wac.getResource("classpath:" + resource).getInputStream()));
     }
 
     @Test
     public void listAllSuccess() throws Exception {
 
-        UserDO[] userDOS = new GsonBuilder().registerTypeAdapter(byte[].class, (JsonDeserializer<byte[]>) (json, typeOfT, context) -> Base64.decodeBase64(json.getAsString()))
-                .create().fromJson(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(getFile("ListUser.json")))), UserDO[].class);
+        UserDO[] userDOS = new GsonBuilder().registerTypeAdapter(byte[].class,
+                (JsonDeserializer<byte[]>) (json, typeOfT, context) -> Base64.decodeBase64(json.getAsString()))
+                .create().fromJson(getFile("ListUser.json"), UserDO[].class);
         given(userRegistration.listAll()).willReturn(Arrays.asList(userDOS));
 
         mvc.perform(post("/list/all")
