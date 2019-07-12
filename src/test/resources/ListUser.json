@@ -1,0 +1,29 @@
+[
+  {
+    "firstName": "SUN",
+    "lastName": "ORACLE",
+    "middleName": "8",
+    "dob": "19990318",
+    "email": "1@outlook.com",
+    "userName": "1",
+    "password": "password"
+  },
+  {
+    "firstName": "SUN2",
+    "lastName": "JAVA",
+    "middleName": "8",
+    "dob": "19990318",
+    "email": "2@outlook.com",
+    "userName": "2",
+    "password": "password"
+  },
+  {
+    "firstName": "JAVA",
+    "lastName": "SUN",
+    "middleName": "8",
+    "dob": "19990318",
+    "email": "reachkv@outlook.com",
+    "userName": "reachkv",
+    "password": "password"
+  }
+]
